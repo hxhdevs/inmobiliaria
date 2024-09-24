@@ -3,8 +3,13 @@
     background-color: $grisOscuro;
     margin-bottom: 0;
 
-    .conteniedo-footer{
+    .contenedor-footer{
         padding-top: calc($separacion / 2);
+    }
+
+    .navegacion{
+        visibility: visible;
+        opacity: 1;
     }
 
     .copyright{
