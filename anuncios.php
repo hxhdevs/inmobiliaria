@@ -1,40 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienes Raices</title>
-    <link rel="stylesheet" href="build/css/app.css">
-</head>
-<body>
-
-    <header class="header">
-        <div class="contenedor contenido-header">
-            <div class="barra">
-                <a href="/">
-                    <img src="build/img/logo.svg" alt="logotipo de bienes raices">
-                </a>
-
-                <div class="mobile-menu">
-                    <img src="build/img/barras.svg" alt="icono menu responsivo">
-                </div>
-
-                <div class="derecha">
-                    <img class="dark-mode-boton" src="build/img/dark-mode.svg">
-                    <nav class="navegacion">
-                        <a href="nosotros.html">Nosotros</a>
-                        <a href="anuncios.html">Anuncios</a>
-                        <a href="blog.html">Blog</a>
-                        <a href="contacto.html">Contacto</a>
-                    </nav>
-                </div>
-            </div>
-
-        </div>
-    </header>
-    
-    <section class="contenedor seccion">
-        <h2>Anuncios</h2>
+<?php
+    include 'includes/templates/header.php';
+?>   
+    <main class="contenedor seccion">
+        
+        <h2>Casas y Depas en Venta</h2>
 
         <div class="contenedor-anuncios">
             <div class="anuncio">
@@ -43,12 +12,12 @@
                     <source srcset="build/img/anuncio1.jpg" type="image/jpg">
                     <img loading="lazy" src="build/img/anuncio1.jpg" alt="anuncio">
                 </picture>
-                
+
                 <div class="contenido-anuncio">
                     <h3>Casa de lujo en el lago</h3>
                     <p>Cada en el lago, excelente vista, acabados de lujo a un excelente precio</p>
                     <p class="precio">$3,000,000</p>
-                    
+
                     <ul class="iconos-caracteristicas">
                         <li>
                             <img class="icono" loading="lazy" src="build/img/icono_wc.svg" alt="icono wc">
@@ -68,7 +37,7 @@
                         Ver Propiedad
                     </a>
                 </div>
-            </div><!-- Anuncio-->
+            </div>
             <div class="anuncio">
                 <picture>
                     <source srcset="build/img/anuncio2.webp" type="image/webp">
@@ -133,8 +102,9 @@
                     </a>
                 </div><!-- Contenido anuncios -->
             </div><!-- Anuncio-->
-        </div><!-- .contenedor-anuncios-->
-    </section>
+        </div>
+    </main>  
+
     <section class="contenedor seccion">
 
         <div class="contenedor-anuncios">

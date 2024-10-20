@@ -19,6 +19,12 @@ const paths = {
     imagenes: 'src/img/**/*'
 }
 
+// Tarea para limpiar la carpeta de destino
+function cleanBuild() {
+    return src('build', { read: false, allowEmpty: true })
+        .pipe(clean());
+}
+
 function css() {
     return src(paths.scss)
         .pipe(sourcemaps.init())
