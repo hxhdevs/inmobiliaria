@@ -16,7 +16,7 @@
                 </a>
 
                 <div class="mobile-menu">
-                    <img src="build/img/barras.svg" alt="icono menu responsive">
+                    <img src="/build/img/barras.svg" alt="icono menu responsive">
                 </div>
 
                 <div class="derecha">
@@ -30,7 +30,7 @@
                 </div>
             
             </div>
-            <?php  if(isset($inicio)) { ?>
+            <?php  if($inicio){ ?>
                 <h1>Venta de casas y departamentos exclusivos de lujo</h1>
             <?php } ?>
         </div>
