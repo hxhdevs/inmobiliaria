@@ -2,13 +2,17 @@
     require '../../includes/config/database.php';
     $db=conectarDB();
 
+    $consulta = "SELECT * FROM vendedores";
+    $resultado = mysqli_query($db,$consulta);
+
     $titulo = '';
     $precio = '';
     $descripcion = '';
     $habitaciones = '';
     $wc = '';
     $estacionamiento = '';
-    $vendedor = '';
+    $vendedorId = '';
+    $creado = '';
 
     $errores =[];
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -19,7 +23,8 @@
         $habitaciones = $_POST['habitaciones'];
         $wc = $_POST['wc'];
         $estacionamiento = $_POST['estacionamiento'];
-        $vendedor = $_POST['vendedor'];
+        $vendedorId = $_POST['vendedor'];
+        $creado = date('Y/m/d');
         
         if (!$titulo) {
             $errores[] = "Debes añadir un titulo";
@@ -39,24 +44,24 @@
         if (!$estacionamiento) {
             $errores[] = "El numero de estacionamiento es obligatorio";
         }
-        if (!$vendedor) {
+        if (!$vendedorId) {
             $errores[] = "Elige vendedor";
         }
         
         
-        // echo "<pre>";
-        // var_dump($_POST);
-        // echo "</pre>";
+        echo "<pre>";
+        var_dump($_POST);
+        echo "</pre>";
 
         if (empty($errores)) {
-            $query = "INSERT INTO propiedades (titulo,precio,descripcion,habitaciones,wc,estacionamiento,fk_vendedor) VALUES ('$titulo','$precio','$descripcion','$habitaciones','$wc','$estacionamiento','$vendedor')";
+            $query = "INSERT INTO propiedades (titulo,precio,descripcion,habitaciones,wc,estacionamiento,creado,fk_vendedor) VALUES ('$titulo','$precio','$descripcion','$habitaciones','$wc','$estacionamiento','$creado','$vendedorId')";
 
-            echo $query;
+            // echo $query;
 
             $resultado = mysqli_query($db,$query);
 
             if ($resultado) {
-                echo "Insertado correctamente";
+                header('Location: /');
             }
         }
 
@@ -111,9 +116,13 @@
                 <legend>Vendedor</legend>
 
                 <select name="vendedor">
-                    <option value="1">Elih</option>
-                    <option value="2">Pitta</option>
-                </select>
+                    <option value="">-- Seleccione --</option>
+                    <?php while($vendedor = mysqli_fetch_assoc($resultado)): ?>
+                        <option <?php echo $vendedorId === $vendedor['id'] ? 'selected' : ''; ?> value="<?php echo $vendedor['id']; ?>">
+                        <?php echo $vendedor['nombre'] . " " . $vendedor['apellido'];?> </option>
+                        <?php endwhile; ?>
+                    </select>
+
             </fieldset>
 
             <input type="submit" value="Crear propiedad" class="boton boton-verde">
