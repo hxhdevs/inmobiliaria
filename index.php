@@ -196,5 +196,5 @@
     </div>
 
     <?php
-        incluirTemplate('footer');
+         incluirTemplate('footer');
     ?>

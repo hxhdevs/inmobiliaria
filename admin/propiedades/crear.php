@@ -89,7 +89,7 @@
             $resultado = mysqli_query($db,$query);
 
             if ($resultado) {
-                header('Location: /bienesraices/admin/propiedades/');
+                header('Location: /bienesraices/admin/propiedades/index.php?resultado=1');
             }
         }
         
