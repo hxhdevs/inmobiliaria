@@ -16,19 +16,27 @@
     require '../../includes/config/database.php';
     $db=conectarDB();
 
+    $consulta = "SELECT * FROM propiedades WHERE id =${id}";
+    $resultado = mysqli_query($db,$consulta);
+    $propiedad = mysqli_fetch_assoc($resultado);
+
+    echo "<pre>";
+    var_dump($propiedad);
+    echo "</pre>";
+
     $consulta = "SELECT * FROM vendedores";
     $resultado = mysqli_query($db,$consulta);
-
-    $titulo = '';
-    $precio = '';
-    $descripcion = '';
-    $habitaciones = '';
-    $wc = '';
-    $estacionamiento = '';
-    $vendedorId = '';
-    $creado = '';
-
     $errores =[];
+    
+    $titulo = $propiedad['titulo'];
+    $precio = $propiedad['precio'];
+    $descripcion = $propiedad['descripcion'];
+    $habitaciones = $propiedad['habitaciones'];
+    $wc = $propiedad['wc'];
+    $estacionamiento = $propiedad['estacionamiento'];
+    $vendedorId = $propiedad['fk_vendedor'];
+    $imagenPropiedad = $propiedad['imagen'];
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
@@ -136,6 +144,7 @@
                     
                     <label for="imagen">Imagen:</label>
                     <input type="file" id="imagen" accept="image/jpeg, image/png" name="imagen">
+                    <img src="/imagenes/<?php $imagenPropiedad ?>" class="imagen-small">
 
                     <label for="descripcion">Descripcion:</label>
                     <textarea id="descripcion" name="descripcion"><?php echo $descripcion; ?></textarea>
