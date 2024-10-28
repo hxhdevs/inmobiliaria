@@ -94,31 +94,44 @@
         echo "</pre>";
 
         if (empty($errores)) {
-            /* Subida de archivos*/
-            //Crear carpeta
-            $carpetaImagenes ='../../imagenes/';
+            // Crear carpeta de imágenes si no existe
+            $carpetaImagenes = '../../imagenes/';
             if (!is_dir($carpetaImagenes)) {
                 mkdir($carpetaImagenes);
             }
-            //Generar un nombre unico para la imagen cargada
-            $nombreImagen = md5(uniqid(rand(),true)).".jpg";
-            //Subir la imagen
-            move_uploaded_file($imagen['tmp_name'],$carpetaImagenes.$nombreImagen);
-
-
-            $query = "UPDATE propiedades SET titulo ='${titulo}', precio ='${precio}', descripcion ='${descripcion}',habitaciones ='${habitaciones}', wc=${wc},estacionamiento=${estacionamiento}, fk_vendedor='${vendedorId}' WHERE id = ${id}";
-
-            var_dump($query);
-            // exit();
-
-            $resultado = mysqli_query($db,$query);
-
+    
+            if ($imagen['name']) {
+                // Eliminar imagen existente, si hay una imagen guardada
+                if (file_exists($carpetaImagenes . $imagenPropiedad)) {
+                    unlink($carpetaImagenes . $imagenPropiedad);
+                }
+    
+                // Crear un nombre único para la nueva imagen
+                $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
+                move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
+            } else {
+                // Mantener la imagen actual si no se sube una nueva
+                $nombreImagen = $imagenPropiedad;
+            }
+    
+            // Actualizar la base de datos con la nueva información
+            $query = "UPDATE propiedades SET 
+                        titulo = '${titulo}', 
+                        precio = '${precio}', 
+                        imagen = '${nombreImagen}', 
+                        descripcion = '${descripcion}', 
+                        habitaciones = '${habitaciones}', 
+                        wc = ${wc}, 
+                        estacionamiento = ${estacionamiento}, 
+                        fk_vendedor = '${vendedorId}' 
+                      WHERE id = ${id}";
+    
+            $resultado = mysqli_query($db, $query);
+    
             if ($resultado) {
                 header('Location: /bienesraices/admin/propiedades/index.php?resultado=2');
             }
         }
-        
-        
     }
 
     require '../../includes/funciones.php';
@@ -147,7 +160,7 @@
                     
                     <label for="imagen">Imagen:</label>
                     <input type="file" id="imagen" accept="image/jpeg, image/png" name="imagen">
-                    <img src="/imagenes/<?php $imagenPropiedad ?>" class="imagen-small">
+                    <img src="../../imagenes/<?php echo $imagenPropiedad; ?>" class="imagen-small">
 
                     <label for="descripcion">Descripcion:</label>
                     <textarea id="descripcion" name="descripcion"><?php echo $descripcion; ?></textarea>
