@@ -38,7 +38,12 @@
     $imagenPropiedad = $propiedad['imagen'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        echo"<pre>";
+        var_dump($_POST);
+        echo"</pre>";
+        // exit;
         
+
         $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
         $precio = mysqli_real_escape_string($db, $_POST['precio']);
         $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']);
@@ -71,10 +76,7 @@
         }
         if (!$vendedorId) {
             $errores[] = "Elige vendedor";
-        }
-        if (!$imagen['name'] || $imagen['error']) {
-            $errores[] = "La imagen es obligatoria vendedor";
-        }
+        } 
         
         $medida = 1000 * 1000;
 
@@ -104,14 +106,15 @@
             move_uploaded_file($imagen['tmp_name'],$carpetaImagenes.$nombreImagen);
 
 
-            $query = "INSERT INTO propiedades (titulo,precio,imagen,descripcion,habitaciones,wc,estacionamiento,creado,fk_vendedor) VALUES ('$titulo','$precio','$nombreImagen','$descripcion','$habitaciones','$wc','$estacionamiento','$creado','$vendedorId')";
+            $query = "UPDATE propiedades SET titulo ='${titulo}', precio ='${precio}', descripcion ='${descripcion}',habitaciones ='${habitaciones}', wc=${wc},estacionamiento=${estacionamiento}, fk_vendedor='${vendedorId}' WHERE id = ${id}";
 
-            // echo $query;
+            var_dump($query);
+            // exit();
 
             $resultado = mysqli_query($db,$query);
 
             if ($resultado) {
-                header('Location: /bienesraices/admin/propiedades/index.php?resultado=1');
+                header('Location: /bienesraices/admin/propiedades/index.php?resultado=2');
             }
         }
         
@@ -133,7 +136,7 @@
             </div>
         <?php endforeach; ?>
 
-        <form class="formulario" method="POST" action="/bienesraices/admin/propiedades/crear.php" enctype="multipart/form-data">
+        <form class="formulario" method="POST" enctype="multipart/form-data">
             <fieldset>
                 <legend>Informacion general</legend>
                     <label for="titulo">Titulo:</label>
