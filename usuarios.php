@@ -5,9 +5,9 @@ $db=conectarDB();
 $email = "correo@mail.com";
 $password="123123";
 
-$query = "INSERT INTO usuarios (email,password) VALUES ('${email}','${password}');";
+$passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
+$query = "INSERT INTO usuarios (email,password) VALUES ('${email}','${passwordHash}');";
 
-echo $query;
 mysqli_query($db,$query);
 ?>
