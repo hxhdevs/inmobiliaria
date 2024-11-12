@@ -18,6 +18,21 @@
         if (!$password) {
             $errores[]="El password es obligatorio";
         }
+
+        if (empty($errores)) {
+        
+            $query = "SELECT * FROM usuarios WHERE email = '${email}'";
+            $resultado = mysqli_query($db, $query);
+        
+            var_dump($resultado);
+
+            if ($resultado->num_rows) {
+                # code...
+            } else {
+                $errores[] = "El usuario no existe";
+            }
+            
+        }
         echo "<pre>";
         var_dump($errores);
         echo "</pre>";
