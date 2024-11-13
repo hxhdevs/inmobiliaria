@@ -1,4 +1,14 @@
 <?php
+session_start();
+echo "<pre>";
+var_dump($_SESSION);
+echo "</pre>";
+
+$auth = $_SESSION['login'];
+if (!$auth) {
+    header('Location: /'); 
+}
+
 var_dump($_POST);
     require '../../includes/config/database.php';
     $db= conectarDB();
