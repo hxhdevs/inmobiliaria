@@ -1,5 +1,14 @@
 <?php
+    require '../../includes/funciones.php';
     require '../../includes/config/database.php';
+    $auth = estaAutenticado();
+    if (!$auth) {
+        header('Location: /');
+    }    
+    echo "<pre>";
+    var_dump($_SESSION);
+    echo "</pre>";
+    var_dump($_POST);
     $db=conectarDB();
 
     $consulta = "SELECT * FROM vendedores";
@@ -96,7 +105,7 @@
         
     }
 
-    require '../../includes/funciones.php';
+
     incluirTemplate('header');
 ?>
 

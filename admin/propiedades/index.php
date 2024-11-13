@@ -1,16 +1,17 @@
 <?php
-session_start();
-echo "<pre>";
-var_dump($_SESSION);
-echo "</pre>";
+require '../../includes/config/database.php';
+require '../../includes/funciones.php';
 
-$auth = $_SESSION['login'];
-if (!$auth) {
-    header('Location: /'); 
-}
 
-var_dump($_POST);
-    require '../../includes/config/database.php';
+    $auth = estaAutenticado();
+    if (!$auth) {
+        header('Location: /');
+    }    
+    echo "<pre>";
+    var_dump($_SESSION);
+    echo "</pre>";
+    var_dump($_POST);
+
     $db= conectarDB();
 
     $query = "SELECT * FROM propiedades";
@@ -43,7 +44,7 @@ var_dump($_POST);
         // var_dump($id); 
     }
     //incluye in template        
-    require '../../includes/funciones.php';
+    
     incluirTemplate('header');
 ?>
 
@@ -76,7 +77,7 @@ var_dump($_POST);
                 <tr>
                     <td><?php echo $propiedad['id'];?> </td>
                     <td><?php echo $propiedad['titulo'];?></td>
-                    <td><img src="../../imagenes/<?php echo $propiedad['imagen']?>" class="imagen-tabla"></td>
+                    <td><img src="../../imagenes/<?php echo $propiedad['imagen'].'.jpg'?>" class="imagen-tabla"></td>
                     <td><?php echo $propiedad['precio'];?></td>
                     <td>
                         <form method="POST" class="w-100">

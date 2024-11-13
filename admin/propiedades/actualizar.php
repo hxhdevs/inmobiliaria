@@ -1,4 +1,14 @@
 <?php
+    require '../../includes/funciones.php';
+    require '../../includes/config/database.php';
+    $auth = estaAutenticado();
+    if (!$auth) {
+        header('Location: /');
+    }    
+    echo "<pre>";
+    var_dump($_SESSION);
+    echo "</pre>";
+    var_dump($_POST);
 
     // Validando url por id valido
     $id = $_GET['id'];
@@ -13,7 +23,7 @@
     echo "</pre>";
 
 
-    require '../../includes/config/database.php';
+
     $db=conectarDB();
 
     $consulta = "SELECT * FROM propiedades WHERE id =${id}";
@@ -134,7 +144,6 @@
         }
     }
 
-    require '../../includes/funciones.php';
     incluirTemplate('header');
 ?>
 
@@ -160,7 +169,7 @@
                     
                     <label for="imagen">Imagen:</label>
                     <input type="file" id="imagen" accept="image/jpeg, image/png" name="imagen">
-                    <img src="../../imagenes/<?php echo $imagenPropiedad; ?>" class="imagen-small">
+                    <img src="../../imagenes/<?php echo $imagenPropiedad.'.jpg'; ?>" class="imagen-small">
 
                     <label for="descripcion">Descripcion:</label>
                     <textarea id="descripcion" name="descripcion"><?php echo $descripcion; ?></textarea>
