@@ -1,0 +1,17 @@
+{
+    "name": "tetos/bienesraices",
+    "description": "Creando autoload y vendor para proyecto POO y PDO",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\" : "./classes"
+        }
+    },
+    "authors": [
+        {
+            "name": "HXHdevs",
+            "email": "jordisonnicolas@gmail.com"
+        }
+    ],
+    "require": {}
+}
