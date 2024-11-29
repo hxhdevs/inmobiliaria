@@ -42,6 +42,9 @@
 
                     $_SESSION['usuario'] = $usuario['email'];
                     $_SESSION['login'] = true;
+                    // var_dump($_SESSION['login']);
+                    // die();
+                    
                     header('Location: /bienesraices/admin/propiedades/index.php');
                 } else {
                     $errores[]='El password es incorrecto';

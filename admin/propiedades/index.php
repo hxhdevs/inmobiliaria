@@ -3,15 +3,8 @@
 require '../../includes/app.php';
 
 
-    $auth = estaAutenticado();
-    if (!$auth) {
-        header('Location: /');
-    }    
-    echo "<pre>";
-    var_dump($_SESSION);
-    echo "</pre>";
-    var_dump($_POST);
-
+    estaAutenticado();
+    
     $db= conectarDB();
 
     $query = "SELECT * FROM propiedades";

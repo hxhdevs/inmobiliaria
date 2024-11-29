@@ -6,17 +6,10 @@
     $propiedad = new Propiedad;
 
     dep($propiedad);
+    estaAutenticado();
 
     exit;
     
-    $auth = estaAutenticado();
-    if (!$auth) {
-        header('Location: /');
-    }    
-    echo "<pre>";
-    var_dump($_SESSION);
-    echo "</pre>";
-    var_dump($_POST);
     $db=conectarDB();
 
     $consulta = "SELECT * FROM vendedores";
