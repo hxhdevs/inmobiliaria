@@ -1,5 +1,5 @@
 <?php 
-require __DIR__ . '../../config/database.php';
+
 $db = conectarDB();
 $query="SELECT * FROM propiedades LIMIT ${limite}";
 $resultado = mysqli_query($db,$query);
@@ -39,7 +39,7 @@ $resultado = mysqli_query($db,$query);
         </div><!-- .contenedor-anuncios-->
 
         <div class="ver-todas alinear-derecha">
-            <a href="anuncios.html" class="boton-verde">Ver Todas</a>
+            <a href="anuncios.php" class="boton-verde">Ver Todas</a>
         </div>
     </section>
 <?php 

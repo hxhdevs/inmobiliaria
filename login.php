@@ -1,5 +1,5 @@
 <?php
-    require 'includes/config/database.php';
+    require 'includes/app.php';
     $db = conectarDB();
 
     $errores = [];
@@ -57,7 +57,7 @@
         echo "</pre>";
     }
 
-    include 'includes/funciones.php';
+    
     incluirTemplate('header');
 ?>   
 
