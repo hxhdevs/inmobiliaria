@@ -4,7 +4,8 @@ namespace App;
 
 class Propiedad {
 
-    protected static $db ;
+    protected static $db;
+    protected static $columnasDB =['id','titulo','precio','imagen','descripcion','habitaciones','wc','estacionamiento','creado','vendedorId'];
 
     public $id;
     public $titulo;
@@ -17,6 +18,10 @@ class Propiedad {
     public $creado;
     public $vendedorId;
     
+    public static function setDB($database){
+        self::$db = $database;
+    }
+
     public function __construct($args= [])
     {
         $this->id = $args['id'] ?? '';
@@ -32,14 +37,24 @@ class Propiedad {
     }
 
     public function guardar(){
-        echo "Guardado en la base de datos";
+        $atributos = $this->sanitizarAtributos();
         $query = "INSERT INTO propiedades (titulo,precio,imagen,descripcion,habitaciones,wc,estacionamiento,creado,fk_vendedor) VALUES ('$this->titulo','$this->precio','$this->imagen','$this->descripcion','$this->habitaciones','$this->wc','$this->estacionamiento','$this->creado','$this->vendedorId')";
 
         $resultado = self::$db->query($query);
         dep($resultado);
     }
 
-    public static function setDB($database){
-        self::$db = $database;
+    public function atributos(){//Identifica y une los atributos de la BD
+        $atributos = [];
+        foreach(self::$columnasDB as $columna){
+            if($columna === 'id') continue;
+            $atributos[$columna] =  $this->$columna;
+        }
     }
+    
+    public function sanitizarAtributos(){
+        $atributos = $this->atributos();
+        dep($atributos);
+    }
+
 }
