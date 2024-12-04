@@ -30,7 +30,7 @@ class Propiedad {
         $this->imagen = $args['imagen'] ?? 'imagen.jpg';
         $this->descripcion = $args['descripcion'] ?? '';
         $this->habitaciones = $args['habitaciones'] ?? '';
-        $this->wc = $args[''] ?? 'wc';
+        $this->wc = $args['wc'] ?? '';
         $this->estacionamiento = $args['estacionamiento'] ?? '';
         $this->creado = date('Y/m/d');
         $this->vendedorId = $args['vendedorId'] ?? '';
@@ -54,7 +54,11 @@ class Propiedad {
     
     public function sanitizarAtributos(){
         $atributos = $this->atributos();
-        dep($atributos);
+        $sanitizado = [];
+        foreach($atributos as $key => $value){
+            $sanitizado[$key] = self::$db->escape_string($value);
+        }
+        return $sanitizado;
     }
 
 }
