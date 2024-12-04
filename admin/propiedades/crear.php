@@ -7,13 +7,13 @@
 
     dep($propiedad);
     estaAutenticado();
-
-    exit;
     
     $db=conectarDB();
 
     $consulta = "SELECT * FROM vendedores";
     $resultado = mysqli_query($db,$consulta);
+    
+    $errores =[];
 
     $titulo = '';
     $precio = '';
@@ -22,18 +22,20 @@
     $wc = '';
     $estacionamiento = '';
     $vendedorId = '';
-    $creado = '';
 
-    $errores =[];
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
+        $propiedad = new Propiedad($_POST);
+        
+        $propiedad->guardar();
+
         $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
         $precio = mysqli_real_escape_string($db, $_POST['precio']);
         $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']);
         $habitaciones = mysqli_real_escape_string($db, $_POST['habitaciones']);
         $wc = mysqli_real_escape_string($db, $_POST['wc']);
         $estacionamiento = mysqli_real_escape_string($db, $_POST['estacionamiento']);
-        $vendedorId = mysqli_real_escape_string($db, $_POST['vendedor']);
+        $vendedorId = mysqli_real_escape_string($db, $_POST['vendedorId']);
         $creado = date('Y/m/d');
         
         $imagen = $_FILES['imagen'];
@@ -71,13 +73,13 @@
         }
         // exit;
         
-        echo "<pre>";
-        var_dump($_POST);
-        echo "</pre>";
+        // echo "<pre>";
+        // var_dump($_POST);
+        // echo "</pre>";
         
-        echo "<pre>";
-        var_dump($_FILES);
-        echo "</pre>";
+        // echo "<pre>";
+        // var_dump($_FILES);
+        // echo "</pre>";
 
         if (empty($errores)) {
             /* Subida de archivos*/
@@ -92,7 +94,7 @@
             move_uploaded_file($imagen['tmp_name'],$carpetaImagenes.$nombreImagen);
 
 
-            $query = "INSERT INTO propiedades (titulo,precio,imagen,descripcion,habitaciones,wc,estacionamiento,creado,fk_vendedor) VALUES ('$titulo','$precio','$nombreImagen','$descripcion','$habitaciones','$wc','$estacionamiento','$creado','$vendedorId')";
+
 
             // echo $query;
 
@@ -153,7 +155,7 @@
             <fieldset>
                 <legend>Vendedor</legend>
 
-                <select name="vendedor">
+                <select name="vendedorId">
                     <option value="">-- Seleccione --</option>
                     <?php while($vendedor = mysqli_fetch_assoc($resultado)): ?>
                         <option <?php echo $vendedorId === $vendedor['id'] ? 'selected' : ''; ?> value="<?php echo $vendedor['id']; ?>">
