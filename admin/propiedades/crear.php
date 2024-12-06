@@ -3,9 +3,10 @@
 
     use App\Propiedad;
 
-    $propiedad = new Propiedad;
+    // $propiedad = new Propiedad;
 
-    dep($propiedad);
+    // // dep($propiedad);
+    // dep($_POST);
     estaAutenticado();
     
     $db=conectarDB();
@@ -13,7 +14,8 @@
     $consulta = "SELECT * FROM vendedores";
     $resultado = mysqli_query($db,$consulta);
     
-    $errores =[];
+    $errores = Propiedad::getErrores();
+    // dep($errores);
 
     $titulo = '';
     $precio = '';
@@ -27,61 +29,13 @@
         
         $propiedad = new Propiedad($_POST);
         
-        $propiedad->guardar();
-
-        $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
-        $precio = mysqli_real_escape_string($db, $_POST['precio']);
-        $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']);
-        $habitaciones = mysqli_real_escape_string($db, $_POST['habitaciones']);
-        $wc = mysqli_real_escape_string($db, $_POST['wc']);
-        $estacionamiento = mysqli_real_escape_string($db, $_POST['estacionamiento']);
-        $vendedorId = mysqli_real_escape_string($db, $_POST['vendedorId']);
-        $creado = date('Y/m/d');
+        $errores = $propiedad->validar();
         
-        $imagen = $_FILES['imagen'];
-
-
-        if (!$titulo) {
-            $errores[] = "Debes añadir un titulo";
-        }        
-        if (!$precio) {
-            $errores[] = "El precio ees obligatorio";
-        }
-        if (strlen($descripcion)<2) {
-            $errores[] = "La descripcion es obligatoria como minimo 10 caracteres";
-        }
-        if (!$habitaciones) {
-            $errores[] = "El numero de habitaciones es obligatorio";
-        }
-        if (!$wc) {
-            $errores[] = "El numero de baños es obligatorio";
-        }
-        if (!$estacionamiento) {
-            $errores[] = "El numero de estacionamiento es obligatorio";
-        }
-        if (!$vendedorId) {
-            $errores[] = "Elige vendedor";
-        }
-        if (!$imagen['name'] || $imagen['error']) {
-            $errores[] = "La imagen es obligatoria vendedor";
-        }
-        
-        $medida = 1000 * 1000;
-
-        if ($imagen['size']>$medida) {
-            $errores[]='La imagen es muy pesada';
-        }
-        // exit;
-        
-        // echo "<pre>";
-        // var_dump($_POST);
-        // echo "</pre>";
-        
-        // echo "<pre>";
-        // var_dump($_FILES);
-        // echo "</pre>";
-
         if (empty($errores)) {
+            $propiedad->guardar();
+
+            $imagen = $_FILES['imagen'];
+
             /* Subida de archivos*/
             //Crear carpeta
             $carpetaImagenes ='../../imagenes/';
@@ -93,19 +47,15 @@
             //Subir la imagen
             move_uploaded_file($imagen['tmp_name'],$carpetaImagenes.$nombreImagen);
 
-
-
-
             // echo $query;
 
-            $resultado = mysqli_query($db,$query);
+            // $resultado = mysqli_query($db,$query);
 
             if ($resultado) {
                 header('Location: /bienesraices/admin/propiedades/index.php?resultado=1');
             }
+        
         }
-        
-        
     }
 
 
