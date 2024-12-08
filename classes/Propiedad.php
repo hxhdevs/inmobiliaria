@@ -5,7 +5,6 @@ namespace App;
 class Propiedad {
 
     protected static $db;
-    protected static $columnasDB =['id','titulo','precio','imagen','descripcion','habitaciones','wc','estacionamiento','creado','fk_vendedor'];
 
     protected static $errores =[];
 
@@ -30,14 +29,14 @@ class Propiedad {
         $this->id = $args['id'] ?? '';
         $this->titulo = $args['titulo'] ?? '';
         $this->precio = $args['precio'] ?? '';
-        $this->imagen = $args['imagen'] ?? 'imagen.jpg';
+        $this->imagen = $args['imagen'] ?? '';
         $this->descripcion = $args['descripcion'] ?? '';
         $this->habitaciones = $args['habitaciones'] ?? '';
         $this->wc = $args['wc'] ?? '';
         $this->estacionamiento = $args['estacionamiento'] ?? '';
         $this->creado = date('Y/m/d');
-        // $this->vendedorId = $args['vendedorId'] ?? '';
-        $this->fk_vendedor = $args['vendedorId'] ?? '';
+        $this->vendedorId = $args['vendedorId'] ?? '';
+        // $this->fk_vendedor = $args['vendedorId'] ?? '';
     }
 
     public function guardar(){
@@ -96,19 +95,19 @@ class Propiedad {
             self::$errores[] = "El numero de estacionamiento es obligatorio";
         }
         if (!$this->vendedorId) {
-            self::$errores[] = "Elige vendedor";
+            self::$errores[] = "Elige un vendedor";
         }
-        // if (!$this->imagen['name'] || $imagen['error']) {
-        //     $errores[] = "La imagen es obligatoria vendedor";
-        // }
-        
-        // $medida = 1000 * 1000;
-        
-        // if ($this->imagen['size']>$medida) {
-        //     $errores[]='La imagen es muy pesada';
-        // }
+        if (!$this->imagen) {
+            self::$errores[] = "La imagen es obligatoria";
+        }
         
         return self::$errores;
+    }
+
+    public function setImagen($imagen){
+        if ($imagen) {
+            $this->imagen = $imagen;
+        }
     }
 
 }

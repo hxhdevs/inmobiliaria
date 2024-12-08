@@ -1,11 +1,10 @@
 <?php
     require '../../includes/app.php';
-
     use App\Propiedad;
+    use Intervention\Image\Drivers\Gd\Driver;
+    use Intervention\Image\ImageManager as Image;
 
     // $propiedad = new Propiedad;
-
-    // // dep($propiedad);
     // dep($_POST);
     estaAutenticado();
     
@@ -25,32 +24,33 @@
     $estacionamiento = '';
     $vendedorId = '';
 
+    
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $propiedad = new Propiedad($_POST);
         
+        $nombreImagen = md5(uniqid(rand(),true)).".jpg";
+        if ($_FILES['imagen']['tmp_name']) {
+            $manager = new Image(Driver::class);
+            $imagen = $manager->read($_FILES['imagen']['tmp_name'])->cover(800, 600);
+            $propiedad->setImagen($nombreImagen);
+            // dep($imagen);
+        }
+
         $errores = $propiedad->validar();
         
         if (empty($errores)) {
-            $propiedad->guardar();
-
-            $imagen = $_FILES['imagen'];
-
-            /* Subida de archivos*/
-            //Crear carpeta
-            $carpetaImagenes ='../../imagenes/';
-            if (!is_dir($carpetaImagenes)) {
-                mkdir($carpetaImagenes);
+            
+            // $carpetaImagenes ='../../imagenes/';
+            
+            if (!is_dir(CARPETA_IMAGENES)) {
+                mkdir(CARPETA_IMAGENES);
             }
-            //Generar un nombre unico para la imagen cargada
-            $nombreImagen = md5(uniqid(rand(),true)).".jpg";
-            //Subir la imagen
-            move_uploaded_file($imagen['tmp_name'],$carpetaImagenes.$nombreImagen);
+           //Guardar la imagen en el servidor
+            $imagen->save(CARPETA_IMAGENES.$nombreImagen);
 
-            // echo $query;
-
-            // $resultado = mysqli_query($db,$query);
-
+            $resultado = $propiedad->guardar();
             if ($resultado) {
                 header('Location: /bienesraices/admin/propiedades/index.php?resultado=1');
             }
