@@ -1,16 +1,10 @@
 <?php
-
-require '../../includes/app.php';
-
+    require '../../includes/app.php';
 
     estaAutenticado();
     
-    $db= conectarDB();
-
-    $query = "SELECT * FROM propiedades";
-
-    $resultadoConsulta = mysqli_query($db,$query);
-
+    use App\Propiedad;
+    $propiedades = Propiedad::all();
     //Muestra mensaje condicional
     $resultado = $_GET['resultado'] ?? null;
 

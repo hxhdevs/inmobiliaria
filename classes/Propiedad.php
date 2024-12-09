@@ -5,6 +5,7 @@ namespace App;
 class Propiedad {
 
     protected static $db;
+    protected static $columnasDB =['id','titulo','precio','imagen','descripcion','habitaciones','wc','estacionamiento','creado','fk_vendedor'];
 
     protected static $errores =[];
 
@@ -36,7 +37,7 @@ class Propiedad {
         $this->estacionamiento = $args['estacionamiento'] ?? '';
         $this->creado = date('Y/m/d');
         $this->vendedorId = $args['vendedorId'] ?? '';
-        // $this->fk_vendedor = $args['vendedorId'] ?? '';
+        $this->fk_vendedor = $args['vendedorId'] ?? '';
     }
 
     public function guardar(){
@@ -108,6 +109,38 @@ class Propiedad {
         if ($imagen) {
             $this->imagen = $imagen;
         }
+    }
+
+    public static function all(){
+        $query = "SELECT * FROM propiedades";
+        $resultado = self::consultarSQL($query);
+
+        return $resultado;
+    }
+
+    public static function consultarSQL($query){
+        $resultado = self::$db->query($query);
+
+        $array = [];
+        while ($registro = $resultado->fetch_assoc()) {
+            $array[] = self::crearObjeto($registro);
+        }
+
+        $resultado->free();
+
+        return $array;
+    }
+
+    public static function crearObjeto($registro){
+        $objeto = new self;
+        
+        foreach ($registro as $key => $value) {
+            if (property_exists($objeto,$key)) {
+                $objeto->$key = $value;
+            }
+        }
+
+        return $objeto;
     }
 
 }
