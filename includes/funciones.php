@@ -21,3 +21,9 @@ function dep($data){
     var_dump($data);
     echo "</pre>";
 }
+
+
+function s($html) : string{
+    $s = htmlspecialchars($html);
+    return $s;
+}
