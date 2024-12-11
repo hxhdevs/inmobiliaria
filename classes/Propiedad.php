@@ -131,6 +131,13 @@ class Propiedad {
         return $array;
     }
 
+    public static function find($id){
+        $query = "SELECT * FROM propiedades WHERE id = ${id}";
+
+        $resultado = self::consultarSQL($query);
+        return array_shift($resultado);
+    }
+
     public static function crearObjeto($registro){
         $objeto = new self;
         
