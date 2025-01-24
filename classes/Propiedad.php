@@ -5,7 +5,9 @@ namespace App;
 class Propiedad {
 
     protected static $db;
-    protected static $columnasDB =['id','titulo','precio','imagen','descripcion','habitaciones','wc','estacionamiento','creado','fk_vendedor'];
+    protected static $columnasDB =['id','titulo','precio','imagen','descripcion','habitaciones','wc','estacionamiento','creado'
+    // ,'fk_vendedor'
+];
 
     protected static $errores =[];
 
@@ -18,8 +20,8 @@ class Propiedad {
     public $wc;
     public $estacionamiento;
     public $creado;
-    public $vendedorId;
-    public $fk_vendedor;
+    // public $vendedorId;
+    // public $fk_vendedor;
     
     public static function setDB($database){
         self::$db = $database;
@@ -36,8 +38,8 @@ class Propiedad {
         $this->wc = $args['wc'] ?? '';
         $this->estacionamiento = $args['estacionamiento'] ?? '';
         $this->creado = date('Y/m/d');
-        $this->vendedorId = $args['vendedorId'] ?? '';
-        $this->fk_vendedor = $args['vendedorId'] ?? '';
+        // $this->vendedorId = $args['vendedorId'] ?? '';
+        // $this->fk_vendedor = $args['vendedorId'] ?? '';
     }
 
     public function guardar(){
@@ -95,9 +97,9 @@ class Propiedad {
         if (!$this->estacionamiento) {
             self::$errores[] = "El numero de estacionamiento es obligatorio";
         }
-        if (!$this->vendedorId) {
-            self::$errores[] = "Elige un vendedor";
-        }
+        // if (!$this->vendedorId) {
+        //     self::$errores[] = "Elige un vendedor";
+        // }
         if (!$this->imagen) {
             self::$errores[] = "La imagen es obligatoria";
         }
@@ -148,6 +150,14 @@ class Propiedad {
         }
 
         return $objeto;
+    }
+
+    public function sincronizar($args = []){
+        foreach($args as $key => $value){
+            if (property_exists($this, $key)&& !is_null($value)) {
+                $this->$key = $value;
+            }
+        }
     }
 
 }
