@@ -18,59 +18,22 @@ use App\Propiedad;
 
     $consulta = "SELECT * FROM vendedores";
     $resultado = mysqli_query($db,$consulta);
-    $errores =[];
+    $errores = Propiedad::getErrores();
+
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $args = $_POST['propiedad'];
         $propiedad->sincronizar($args);
-        dep($propiedad);
-        $imagen = $_FILES['imagen'];
-
-        if (!$titulo) {
-            $errores[] = "Debes añadir un titulo";
-        }        
-        if (!$precio) {
-            $errores[] = "El precio ees obligatorio";
-        }
-        if (strlen($descripcion)<2) {
-            $errores[] = "La descripcion es obligatoria como minimo 10 caracteres";
-        }
-        if (!$habitaciones) {
-            $errores[] = "El numero de habitaciones es obligatorio";
-        }
-        if (!$wc) {
-            $errores[] = "El numero de baños es obligatorio";
-        }
-        if (!$estacionamiento) {
-            $errores[] = "El numero de estacionamiento es obligatorio";
-        }
-        if (!$vendedorId) {
-            $errores[] = "Elige vendedor";
-        } 
         
-        $medida = 1000 * 1000;
-
-        if ($imagen['size']>$medida) {
-            $errores[]='La imagen es muy pesada';
-        }
-        // exit;
-        
-        echo "<pre>";
-        var_dump($_POST);
-        echo "</pre>";
-        
-        echo "<pre>";
-        var_dump($_FILES);
-        echo "</pre>";
-
+        $errores = $propiedad->validar();
         if (empty($errores)) {
             // Crear carpeta de imágenes si no existe
             $carpetaImagenes = '../../imagenes/';
             if (!is_dir($carpetaImagenes)) {
                 mkdir($carpetaImagenes);
             }
-    
+            $nombreImagen='';
             if ($imagen['name']) {
                 // Eliminar imagen existente, si hay una imagen guardada
                 if (file_exists($carpetaImagenes . $imagenPropiedad)) {
