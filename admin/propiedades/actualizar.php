@@ -1,7 +1,7 @@
 <?php
-
+    
 use App\Propiedad;
-
+use Intervention\Image\ImageManager as Image;
     require '../../includes/app.php';
     estaAutenticado();
     
@@ -28,6 +28,7 @@ use App\Propiedad;
         
         $errores = $propiedad->validar();
         if (empty($errores)) {
+            exit; 
             // Crear carpeta de imágenes si no existe
             $carpetaImagenes = '../../imagenes/';
             if (!is_dir($carpetaImagenes)) {
@@ -36,18 +37,17 @@ use App\Propiedad;
             $nombreImagen='';
             if ($imagen['name']) {
                 // Eliminar imagen existente, si hay una imagen guardada
-                if (file_exists($carpetaImagenes . $imagenPropiedad)) {
-                    unlink($carpetaImagenes . $imagenPropiedad);
-                }
+                
+                unlink($carpetaImagenes . $propiedad['imagen']);
     
                 // Crear un nombre único para la nueva imagen
                 $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
                 move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
             } else {
                 // Mantener la imagen actual si no se sube una nueva
-                $nombreImagen = $imagenPropiedad;
+                $nombreImagen = $propiedad['imagen'];
             }
-    
+
             // Actualizar la base de datos con la nueva información
             $query = "UPDATE propiedades SET 
                         titulo = '${titulo}', 

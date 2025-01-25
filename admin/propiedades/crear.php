@@ -23,8 +23,7 @@
         
         $nombreImagen = md5(uniqid(rand(),true)).".jpg";
         if ($_FILES['propiedad']['tmp_name']['imagen']) {
-            $manager = new Image(Driver::class);
-            $imagen = $manager->read($_FILES['propiedad']['tmp_name']['imagen'])->cover(800, 600);
+            $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800, 600);
             $propiedad->setImagen($nombreImagen);
             // dep($imagen);
         }
