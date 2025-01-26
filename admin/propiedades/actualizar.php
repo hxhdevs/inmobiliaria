@@ -1,7 +1,7 @@
 <?php
-    
-use App\Propiedad;
-use Intervention\Image\ImageManager as Image;
+
+    use App\Propiedad;
+    use Intervention\Image\ImageManager as Image;
     require '../../includes/app.php';
     estaAutenticado();
     
@@ -14,7 +14,6 @@ use Intervention\Image\ImageManager as Image;
     }
     
     $propiedad = Propiedad::find($id);
-    dep($propiedad);
 
     $consulta = "SELECT * FROM vendedores";
     $resultado = mysqli_query($db,$consulta);
@@ -27,44 +26,14 @@ use Intervention\Image\ImageManager as Image;
         $propiedad->sincronizar($args);
         
         $errores = $propiedad->validar();
+        $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
+        if ($_FILES['propiedad']['tmp_name']['imagen']) {
+            $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800, 600);
+            $propiedad->setImagen($nombreImagen);
+        }
         if (empty($errores)) {
-            exit; 
-            // Crear carpeta de imágenes si no existe
-            $carpetaImagenes = '../../imagenes/';
-            if (!is_dir($carpetaImagenes)) {
-                mkdir($carpetaImagenes);
-            }
-            $nombreImagen='';
-            if ($imagen['name']) {
-                // Eliminar imagen existente, si hay una imagen guardada
-                
-                unlink($carpetaImagenes . $propiedad['imagen']);
-    
-                // Crear un nombre único para la nueva imagen
-                $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
-                move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
-            } else {
-                // Mantener la imagen actual si no se sube una nueva
-                $nombreImagen = $propiedad['imagen'];
-            }
-
-            // Actualizar la base de datos con la nueva información
-            $query = "UPDATE propiedades SET 
-                        titulo = '${titulo}', 
-                        precio = '${precio}', 
-                        imagen = '${nombreImagen}', 
-                        descripcion = '${descripcion}', 
-                        habitaciones = '${habitaciones}', 
-                        wc = ${wc}, 
-                        estacionamiento = ${estacionamiento}, 
-                        fk_vendedor = '${vendedorId}' 
-                      WHERE id = ${id}";
-    
-            $resultado = mysqli_query($db, $query);
-    
-            if ($resultado) {
-                header('Location: /bienesraices/admin/propiedades/index.php?resultado=2');
-            }
+            // $image->save(CARPETA_IMAGENES.$nombreImagen);
+            $propiedad->guardar();
         }
     }
 

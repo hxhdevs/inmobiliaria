@@ -32,7 +32,7 @@
 <fieldset>
     <legend>Vendedor</legend>
 
-    <select name="propiedad[vendedorId]">
+    <select name="vendedorId">
         <option value="">-- Seleccione --</option>
         <?php while($vendedor = mysqli_fetch_assoc($resultado)): ?>
             <option <?php echo $vendedorId === $vendedor['id'] ? 'selected' : ''; ?> value="<?php echo s($propiedad->vendedor['id']); ?>">
