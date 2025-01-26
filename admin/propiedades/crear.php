@@ -3,8 +3,8 @@
     use App\Propiedad;
     use Intervention\Image\Drivers\Gd\Driver;
     use Intervention\Image\ImageManager as Image;
-
-    // $propiedad = new Propiedad;
+    
+    $propiedad = new Propiedad;
     // dep($_POST);
     estaAutenticado();
     

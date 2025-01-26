@@ -68,13 +68,25 @@ class Propiedad {
         foreach($atributos as $key => $value){
             $valores[]="{$key}='{$value}'";
         }
-        $query = "UPDATE propiedades SET"; 
+        // dep($valores);
+        $query = "UPDATE propiedades SET "; 
         $query .=join(', ',$valores);
         $query .="WHERE id='".self::$db->escape_string($this->id)."'" ;
         $query .=" LIMIT 1;";
+        // dep($query);
         $resultado = self::$db->query($query);
         if ($resultado) {
             header('Location: /bienesraices/admin/propiedades/index.php?resultado=2');
+        }
+    }
+
+    public function eliminar(){
+        $query = "DELETE FROM propiedades WHERE id =".self::$db->escape_string($this->id)." LIMIT 1";
+        $resultado = self::$db->query($query);
+
+        if ($resultado) {
+            $this->borrarImagen();
+            header('location: ../../admin/propiedades/index.php?resultado=3');
         }
     }
 
@@ -94,6 +106,10 @@ class Propiedad {
             $sanitizado[$key] = self::$db->escape_string($value);
         }
         return $sanitizado;
+    }
+
+    public function borrarImagen(){
+        dep('Eliminando imagen...');
     }
 
     public static function getErrores(){
@@ -131,10 +147,7 @@ class Propiedad {
 
     public function setImagen($imagen){
         if (isset($this->id)) {
-            $existeArchivo = file_exists(CARPETA_IMAGENES.$this->imagen);
-            if ($existeArchivo) {
-                unlink(CARPETA_IMAGENES->$this->setImagen);
-            }
+            $this->borrarImagen();
         }
         if ($imagen) {
             $this->imagen = $imagen;
