@@ -8,7 +8,7 @@
 
     $propiedades = Propiedad::all();
     $vendedores = Vendedor::all();
-    
+    dep($propiedades);
     $resultado = $_GET['resultado'] ?? null;
 
     if ($_SERVER['REQUEST_METHOD']==='POST') {
