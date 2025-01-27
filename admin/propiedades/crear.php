@@ -31,20 +31,13 @@
         $errores = $propiedad->validar();
         
         if (empty($errores)) {
-            
-            // $carpetaImagenes ='../../imagenes/';
-            
             if (!is_dir(CARPETA_IMAGENES)) {
                 mkdir(CARPETA_IMAGENES);
             }
-           //Guardar la imagen en el servidor
+            //Guardar la imagen en el servidor
             $imagen->save(CARPETA_IMAGENES.$nombreImagen);
 
-            $resultado = $propiedad->guardar();
-            if ($resultado) {
-                header('Location: /bienesraices/admin/propiedades/index.php?resultado=1');
-            }
-        
+            $resultado = $propiedad->guardar();        
         }
     }
 
