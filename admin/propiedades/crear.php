@@ -1,19 +1,16 @@
 <?php
     require '../../includes/app.php';
     use App\Propiedad;
+    use App\Vendedor;
     use Intervention\Image\Drivers\Gd\Driver;
-    use Intervention\Image\ImageManager as Image;
+    use Intervention\Image\ImageManagerStatic as Image;
     
-    $propiedad = new Propiedad;
-    // dep($_POST);
     estaAutenticado();
+
+    $propiedad = new Propiedad;
     
-    $db=conectarDB();
-    $propiedad = new Propiedad();
-    
-    $consulta = "SELECT * FROM vendedores";
-    $resultado = mysqli_query($db,$consulta);
-    
+    $vendedores = Vendedor::all();
+
     $errores = Propiedad::getErrores();
 
 
