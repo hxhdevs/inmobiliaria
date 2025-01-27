@@ -84,7 +84,10 @@ class ActiveRecord {
     }
 
     public function borrarImagen(){
-        dep('Eliminando imagen...');
+        $existeArchivo = file_exists(CARPETA_IMAGENES.$this->imagen);
+        if ($existeArchivo) {
+            unlink(CARPETA_IMAGENES.$this->imagen);
+        }
     }
 
     public static function getErrores(){
@@ -92,32 +95,8 @@ class ActiveRecord {
     }
 
     public function validar(){
-        if (!$this->titulo){
-            self::$errores[] = "Debes añadir un titulo";
-        }
-        if (!$this->precio) {
-            self::$errores[] = "El precio ees obligatorio";
-        }
-        if (strlen($this->descripcion)<2) {
-            self::$errores[] = "La descripcion es obligatoria como minimo 10 caracteres";
-        }
-        if (!$this->habitaciones) {
-            self::$errores[] = "El numero de habitaciones es obligatorio";
-        }
-        if (!$this->wc) {
-            self::$errores[] = "El numero de baños es obligatorio";
-        }
-        if (!$this->estacionamiento) {
-            self::$errores[] = "El numero de estacionamiento es obligatorio";
-        }
-        // if (!$this->vendedorId) {
-        //     self::$errores[] = "Elige un vendedor";
-        // }
-        if (!$this->imagen) {
-            self::$errores[] = "La imagen es obligatoria";
-        }
-        
-        return self::$errores;
+        static::$errores = [];
+        return static::$errores;
     }
 
     public function setImagen($imagen){
