@@ -67,7 +67,7 @@ class ActiveRecord {
 
     public function atributos(){//Identifica y une los atributos de la BD
         $atributos = [];
-        foreach(self::$columnasDB as $columna){
+        foreach(static::$columnasDB as $columna){
             if($columna === 'id') continue;
             $atributos[$columna] =  $this->$columna;
         }
@@ -120,7 +120,7 @@ class ActiveRecord {
 
         $array = [];
         while ($registro = $resultado->fetch_assoc()) {
-            $array[] = self::crearObjeto($registro);
+            $array[] = static::crearObjeto($registro);
         }
 
         $resultado->free();
