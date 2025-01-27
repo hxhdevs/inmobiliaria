@@ -4,8 +4,11 @@
     estaAutenticado();
     
     use App\Propiedad;
+    use App\Vendedor;
+
     $propiedades = Propiedad::all();
-    //Muestra mensaje condicional
+    $vendedores = Vendedor::all();
+    
     $resultado = $_GET['resultado'] ?? null;
 
     if ($_SERVER['REQUEST_METHOD']==='POST') {

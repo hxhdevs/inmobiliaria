@@ -8,7 +8,7 @@ class ActiveRecord {
     protected static $columnasDB =['id','titulo','precio','imagen','descripcion','habitaciones','wc','estacionamiento','creado'
     // ,'fk_vendedor'
 ];
-
+    protected static $tabla = '';
     protected static $errores =[];
 
     public $id;
@@ -53,7 +53,7 @@ class ActiveRecord {
     public function crear(){
         $atributos = $this->sanitizarAtributos();
         
-        $query = "INSERT INTO propiedades ( ";
+        $query = "INSERT INTO ".static::$tabla." ( ";
         $query.= join(', ', array_keys($atributos));
         $query.= " ) VALUES (' ";
         $query.= join("', '", array_values($atributos));
@@ -72,7 +72,7 @@ class ActiveRecord {
             $valores[]="{$key}='{$value}'";
         }
         // dep($valores);
-        $query = "UPDATE propiedades SET "; 
+        $query = "UPDATE ".static::$tabla." SET "; 
         $query .=join(', ',$valores);
         $query .="WHERE id='".self::$db->escape_string($this->id)."'" ;
         $query .=" LIMIT 1;";
@@ -84,7 +84,7 @@ class ActiveRecord {
     }
 
     public function eliminar(){
-        $query = "DELETE FROM propiedades WHERE id =".self::$db->escape_string($this->id)." LIMIT 1";
+        $query = "DELETE FROM ".static::$tabla." WHERE id =".self::$db->escape_string($this->id)." LIMIT 1";
         $resultado = self::$db->query($query);
 
         if ($resultado) {
@@ -158,7 +158,7 @@ class ActiveRecord {
     }
 
     public static function all(){
-        $query = "SELECT * FROM propiedades";
+        $query = "SELECT * FROM ".static::$tabla;
         $resultado = self::consultarSQL($query);
 
         return $resultado;
@@ -178,7 +178,7 @@ class ActiveRecord {
     }
 
     public static function find($id){
-        $query = "SELECT * FROM propiedades WHERE id = ${id}";
+        $query = "SELECT * FROM ".static::$tabla." WHERE id = ${id}";
 
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
