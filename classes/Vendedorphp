@@ -1,0 +1,14 @@
+<?php 
+
+namespace App;
+
+class Vendedor extends ActiveRecord{
+
+    public static function all(){
+        $query = "SELECT * FROM propiedades";
+        $resultado = self::consultarSQL($query);
+
+        return $resultado;
+    }
+    
+}
