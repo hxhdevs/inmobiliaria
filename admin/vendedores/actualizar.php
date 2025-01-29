@@ -2,12 +2,26 @@
 require '../../includes/app.php';
 use App\Vendedor;
 estaAutenticado();
+$id = $_GET['id'];
+$id = filter_var($id, FILTER_VALIDATE_INT);
 
-$vendedor = new Vendedor;
+if (!$id) {
+    header('/bienesraices/admin/');
+}
+
+$vendedor =  Vendedor::find($id);
 
 $errores = Vendedor::getErrores();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
+    $args = $_POST['vendedor'];
+
+    $vendedor->sincronizar($args);
+
+    $errores = $vendedor->validar();
+
+    if (empty($errores)) {
+        $vendedor->guardar();
+    }
 }
 incluirTemplate('header')
 ?>
